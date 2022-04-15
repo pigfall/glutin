@@ -73,24 +73,25 @@ impl Context {
         android_glue::add_sync_event_handler(handler);
         let context = Context(ctx.clone());
 
-        el.set_suspend_callback(Some(Box::new(move |suspended| {
-            let mut stopped = ctx.stopped.as_ref().unwrap().lock();
-            *stopped = suspended;
-            if suspended {
-                // Android has stopped the activity or sent it to background.
-                // Release the EGL surface and stop the animation loop.
-                unsafe {
-                    ctx.egl_context.on_surface_destroyed();
-                }
-            } else {
-                // Android has started the activity or sent it to foreground.
-                // Restore the EGL surface and animation loop.
-                unsafe {
-                    let nwin = android_glue::get_native_window();
-                    ctx.egl_context.on_surface_created(nwin as *const _);
-                }
-            }
-        })));
+        todo!("no this method set_suspend_callback");
+        //el.set_suspend_callback(Some(Box::new(move |suspended| {
+        //    let mut stopped = ctx.stopped.as_ref().unwrap().lock();
+        //    *stopped = suspended;
+        //    if suspended {
+        //        // Android has stopped the activity or sent it to background.
+        //        // Release the EGL surface and stop the animation loop.
+        //        unsafe {
+        //            ctx.egl_context.on_surface_destroyed();
+        //        }
+        //    } else {
+        //        // Android has started the activity or sent it to foreground.
+        //        // Restore the EGL surface and animation loop.
+        //        unsafe {
+        //            let nwin = android_glue::get_native_window();
+        //            ctx.egl_context.on_surface_created(nwin as *const _);
+        //        }
+        //    }
+        //})));
 
         Ok((win, context))
     }
